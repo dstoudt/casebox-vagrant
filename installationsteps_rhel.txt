@@ -1,0 +1,1320 @@
+# baselining notes
+# eteryan
+
+
+# RHEL free AMI image
+# update /etc/bashrc configure the PS1 value as necessary
+# assign a static hostname
+# 
+# escape selinux for users' .ssh directories
+# executed from specific user, i.e. /home/eyan/
+# chcon -R -t ssh_home_t .ssh
+#
+# relaxing selinux for email
+# i.e.
+setsebool -P httpd_can_sendmail 1
+#
+# if using putty
+# configure putty for additional lines of scroll back
+# window -> Lines of scrollback = 5000
+#
+#
+
+https://aws.amazon.com/premiumsupport/knowledge-center/linux-static-hostname-rhel7-centos7/
+
+# reboot the VM
+# login and change over to root
+
+sudo -s -H
+
+# change to home directory of root
+
+cd
+
+# dump out currently installed RPMS
+rpm -qa |sort > /tmp/rpmstate.txt
+ 
+# the following is the baseline of installed RPMS
+# at the time of installation notes verification
+#
+# begin output from /tmp/rpmstate.txt
+
+acl-2.2.51-12.el7.x86_64
+audit-2.6.5-3.el7.x86_64
+audit-libs-2.6.5-3.el7.x86_64
+audit-libs-python-2.6.5-3.el7.x86_64
+authconfig-6.2.8-14.el7.x86_64
+basesystem-10.0-7.el7.noarch
+bash-4.2.46-20.el7_2.x86_64
+bind-libs-lite-9.9.4-37.el7.x86_64
+bind-license-9.9.4-37.el7.noarch
+binutils-2.25.1-22.base.el7.x86_64
+btrfs-progs-4.4.1-1.el7.x86_64
+bzip2-libs-1.0.6-13.el7.x86_64
+ca-certificates-2015.2.6-73.el7.noarch
+checkpolicy-2.5-4.el7.x86_64
+chkconfig-1.7.2-1.el7.x86_64
+chrony-2.1.1-3.el7.x86_64
+cloud-init-0.7.6-2.el7.x86_64
+cloud-utils-growpart-0.27-13.el7.noarch
+coreutils-8.22-18.el7.x86_64
+cpio-2.11-24.el7.x86_64
+cracklib-2.9.0-11.el7.x86_64
+cracklib-dicts-2.9.0-11.el7.x86_64
+cronie-1.4.11-14.el7_2.1.x86_64
+cronie-anacron-1.4.11-14.el7_2.1.x86_64
+crontabs-1.11-6.20121102git.el7.noarch
+cryptsetup-libs-1.7.2-1.el7.x86_64
+curl-7.29.0-35.el7.x86_64
+cyrus-sasl-lib-2.1.26-20.el7_2.x86_64
+dbus-1.6.12-17.el7.x86_64
+dbus-glib-0.100-7.el7.x86_64
+dbus-libs-1.6.12-17.el7.x86_64
+dbus-python-1.1.1-9.el7.x86_64
+desktop-file-utils-0.22-1.el7.x86_64
+device-mapper-1.02.135-1.el7.x86_64
+device-mapper-libs-1.02.135-1.el7.x86_64
+dhclient-4.2.5-47.el7.x86_64
+dhcp-common-4.2.5-47.el7.x86_64
+dhcp-libs-4.2.5-47.el7.x86_64
+diffutils-3.3-4.el7.x86_64
+dmidecode-3.0-2.el7.x86_64
+dnsmasq-2.66-21.el7.x86_64
+dracut-033-463.el7.x86_64
+dracut-config-generic-033-463.el7.x86_64
+dracut-config-rescue-033-463.el7.x86_64
+dracut-network-033-463.el7.x86_64
+e2fsprogs-1.42.9-9.el7.x86_64
+e2fsprogs-libs-1.42.9-9.el7.x86_64
+elfutils-libelf-0.166-2.el7.x86_64
+elfutils-libs-0.166-2.el7.x86_64
+emacs-filesystem-24.3-18.el7.noarch
+ethtool-4.5-3.el7.x86_64
+expat-2.1.0-8.el7.x86_64
+file-5.11-33.el7.x86_64
+file-libs-5.11-33.el7.x86_64
+filesystem-3.2-21.el7.x86_64
+findutils-4.5.11-5.el7.x86_64
+fipscheck-1.4.1-5.el7.x86_64
+fipscheck-lib-1.4.1-5.el7.x86_64
+freetype-2.4.11-12.el7.x86_64
+gawk-4.0.2-4.el7.x86_64
+gdbm-1.10-8.el7.x86_64
+gdisk-0.8.6-5.el7.x86_64
+GeoIP-1.5.0-11.el7.x86_64
+gettext-0.18.2.1-4.el7.x86_64
+gettext-libs-0.18.2.1-4.el7.x86_64
+glib2-2.46.2-4.el7.x86_64
+glibc-2.17-157.el7.x86_64
+glibc-common-2.17-157.el7.x86_64
+glib-networking-2.42.0-1.el7.x86_64
+gmp-6.0.0-12.el7_1.x86_64
+gnupg2-2.0.22-4.el7.x86_64
+gnutls-3.3.24-1.el7.x86_64
+gobject-introspection-1.42.0-1.el7.x86_64
+gpgme-1.3.2-5.el7.x86_64
+gpg-pubkey-2fa658e0-45700c69
+gpg-pubkey-fd431d51-4ae0493b
+grep-2.20-2.el7.x86_64
+groff-base-1.22.2-8.el7.x86_64
+grub2-2.02-0.44.el7.x86_64
+grub2-tools-2.02-0.44.el7.x86_64
+grubby-8.28-18.el7.x86_64
+gsettings-desktop-schemas-3.14.2-1.el7.x86_64
+gzip-1.5-8.el7.x86_64
+hardlink-1.0-19.el7.x86_64
+hostname-3.13-3.el7.x86_64
+hwdata-0.252-8.4.el7.x86_64
+info-5.1-4.el7.x86_64
+initscripts-9.49.37-1.el7.x86_64
+iproute-3.10.0-74.el7.x86_64
+iptables-1.4.21-17.el7.x86_64
+iputils-20160308-8.el7.x86_64
+irqbalance-1.0.7-6.el7.x86_64
+iwl7265-firmware-22.0.7.0-49.el7.noarch
+jansson-2.4-6.el7.x86_64
+json-c-0.11-4.el7_0.x86_64
+kbd-1.15.5-12.el7.x86_64
+kbd-legacy-1.15.5-12.el7.noarch
+kbd-misc-1.15.5-12.el7.noarch
+kernel-3.10.0-514.el7.x86_64
+kernel-tools-3.10.0-514.el7.x86_64
+kernel-tools-libs-3.10.0-514.el7.x86_64
+kexec-tools-2.0.7-50.el7.x86_64
+keyutils-libs-1.5.8-3.el7.x86_64
+kmod-20-9.el7.x86_64
+kmod-libs-20-9.el7.x86_64
+kpartx-0.4.9-99.el7.x86_64
+krb5-libs-1.14.1-26.el7.x86_64
+less-458-9.el7.x86_64
+libacl-2.2.51-12.el7.x86_64
+libassuan-2.1.0-3.el7.x86_64
+libattr-2.4.46-12.el7.x86_64
+libblkid-2.23.2-33.el7.x86_64
+libcap-2.22-8.el7.x86_64
+libcap-ng-0.7.5-4.el7.x86_64
+libcgroup-0.41-11.el7.x86_64
+libcom_err-1.42.9-9.el7.x86_64
+libcroco-0.6.8-5.el7.x86_64
+libcurl-7.29.0-35.el7.x86_64
+libdaemon-0.14-7.el7.x86_64
+libdb-5.3.21-19.el7.x86_64
+libdb-utils-5.3.21-19.el7.x86_64
+libedit-3.0-12.20121213cvs.el7.x86_64
+libestr-0.1.9-2.el7.x86_64
+libffi-3.0.13-18.el7.x86_64
+libgcc-4.8.5-11.el7.x86_64
+libgcrypt-1.5.3-12.el7_1.1.x86_64
+libgomp-4.8.5-11.el7.x86_64
+libgpg-error-1.12-3.el7.x86_64
+libgudev1-219-30.el7.x86_64
+libicu-50.1.2-15.el7.x86_64
+libidn-1.28-4.el7.x86_64
+libmnl-1.0.3-7.el7.x86_64
+libmodman-2.0.1-8.el7.x86_64
+libmount-2.23.2-33.el7.x86_64
+libndp-1.2-7.el7.x86_64
+libnetfilter_conntrack-1.0.4-2.el7.x86_64
+libnfnetlink-1.0.1-4.el7.x86_64
+libnl-1.1.4-3.el7.x86_64
+libnl3-3.2.28-2.el7.x86_64
+libnl3-cli-3.2.28-2.el7.x86_64
+libpcap-1.5.3-8.el7.x86_64
+libpipeline-1.2.3-3.el7.x86_64
+libproxy-0.4.11-10.el7.x86_64
+libpwquality-1.2.3-4.el7.x86_64
+libselinux-2.5-6.el7.x86_64
+libselinux-python-2.5-6.el7.x86_64
+libselinux-utils-2.5-6.el7.x86_64
+libsemanage-2.5-4.el7.x86_64
+libsemanage-python-2.5-4.el7.x86_64
+libsepol-2.5-6.el7.x86_64
+libsoup-2.48.1-6.el7.x86_64
+libss-1.42.9-9.el7.x86_64
+libssh2-1.4.3-10.el7_2.1.x86_64
+libstdc++-4.8.5-11.el7.x86_64
+libsysfs-2.1.0-16.el7.x86_64
+libtasn1-3.8-3.el7.x86_64
+libteam-1.25-4.el7.x86_64
+libunistring-0.9.3-9.el7.x86_64
+libuser-0.60-7.el7_1.x86_64
+libutempter-1.1.6-4.el7.x86_64
+libuuid-2.23.2-33.el7.x86_64
+libverto-0.2.5-4.el7.x86_64
+libxml2-2.9.1-6.el7_2.3.x86_64
+libxml2-python-2.9.1-6.el7_2.3.x86_64
+libxslt-1.1.28-5.el7.x86_64
+libyaml-0.1.4-11.el7_0.x86_64
+logrotate-3.8.6-12.el7.x86_64
+lua-5.1.4-15.el7.x86_64
+lzo-2.06-8.el7.x86_64
+m2crypto-0.21.1-17.el7.x86_64
+make-3.82-23.el7.x86_64
+man-db-2.6.3-9.el7.x86_64
+mariadb-libs-5.5.52-1.el7.x86_64
+microcode_ctl-2.1-16.el7.x86_64
+mozjs17-17.0.0-19.el7.x86_64
+ncurses-5.9-13.20130511.el7.x86_64
+ncurses-base-5.9-13.20130511.el7.noarch
+ncurses-libs-5.9-13.20130511.el7.x86_64
+nettle-2.7.1-8.el7.x86_64
+net-tools-2.0-0.17.20131004git.el7.x86_64
+NetworkManager-1.4.0-12.el7.x86_64
+NetworkManager-config-server-1.4.0-12.el7.x86_64
+NetworkManager-libnm-1.4.0-12.el7.x86_64
+NetworkManager-team-1.4.0-12.el7.x86_64
+NetworkManager-tui-1.4.0-12.el7.x86_64
+newt-0.52.15-4.el7.x86_64
+newt-python-0.52.15-4.el7.x86_64
+nspr-4.11.0-1.el7_2.x86_64
+nss-3.21.0-17.el7.x86_64
+nss-softokn-3.16.2.3-14.4.el7.x86_64
+nss-softokn-freebl-3.16.2.3-14.4.el7.x86_64
+nss-sysinit-3.21.0-17.el7.x86_64
+nss-tools-3.21.0-17.el7.x86_64
+nss-util-3.21.0-2.2.el7_2.x86_64
+numactl-libs-2.0.9-6.el7_2.x86_64
+openldap-2.4.40-13.el7.x86_64
+openssh-6.6.1p1-31.el7.x86_64
+openssh-clients-6.6.1p1-31.el7.x86_64
+openssh-server-6.6.1p1-31.el7.x86_64
+openssl-1.0.1e-60.el7.x86_64
+openssl-libs-1.0.1e-60.el7.x86_64
+os-prober-1.58-9.el7.x86_64
+p11-kit-0.20.7-3.el7.x86_64
+p11-kit-trust-0.20.7-3.el7.x86_64
+pam-1.1.8-18.el7.x86_64
+parted-3.1-28.el7.x86_64
+passwd-0.79-4.el7.x86_64
+pciutils-3.5.1-1.el7.x86_64
+pciutils-libs-3.5.1-1.el7.x86_64
+pcre-8.32-15.el7_2.1.x86_64
+pinentry-0.8.1-17.el7.x86_64
+pkgconfig-0.27.1-4.el7.x86_64
+policycoreutils-2.5-8.el7.x86_64
+policycoreutils-python-2.5-8.el7.x86_64
+polkit-0.112-9.el7.x86_64
+polkit-pkla-compat-0.1-4.el7.x86_64
+popt-1.13-16.el7.x86_64
+postfix-2.10.1-6.el7.x86_64
+ppp-2.4.5-33.el7.x86_64
+procps-ng-3.3.10-10.el7.x86_64
+pth-2.0.7-23.el7.x86_64
+pygobject2-2.28.6-11.el7.x86_64
+pygobject3-base-3.14.0-3.el7.x86_64
+pygpgme-0.3-9.el7.x86_64
+pyliblzma-0.5.3-11.el7.x86_64
+pyOpenSSL-0.13.1-3.el7.x86_64
+python-2.7.5-48.el7.x86_64
+python-backports-1.0-8.el7.x86_64
+python-backports-ssl_match_hostname-3.4.0.2-4.el7.noarch
+python-chardet-2.2.1-1.el7_1.noarch
+python-configobj-4.7.2-7.el7.noarch
+python-dateutil-1.5-7.el7.noarch
+python-decorator-3.4.0-3.el7.noarch
+python-dmidecode-3.10.13-11.el7.x86_64
+python-ethtool-0.8-5.el7.x86_64
+python-gudev-147.2-7.el7.x86_64
+python-hwdata-1.7.3-4.el7.noarch
+python-iniparse-0.4-9.el7.noarch
+python-IPy-0.75-6.el7.noarch
+python-jsonpatch-1.2-2.el7.noarch
+python-jsonpointer-1.9-2.el7.noarch
+python-kitchen-1.1.1-5.el7.noarch
+python-libs-2.7.5-48.el7.x86_64
+python-lxml-3.2.1-4.el7.x86_64
+python-magic-5.11-33.el7.noarch
+python-perf-3.10.0-514.el7.x86_64
+python-prettytable-0.7.2-1.el7.noarch
+python-pycurl-7.19.0-19.el7.x86_64
+python-pyudev-0.15-7.el7_2.1.noarch
+python-requests-2.6.0-1.el7_1.noarch
+python-rhsm-1.17.9-1.el7.x86_64
+python-rhsm-certificates-1.17.9-1.el7.x86_64
+python-six-1.9.0-2.el7.noarch
+python-urlgrabber-3.10-8.el7.noarch
+python-urllib3-1.10.2-2.el7_1.noarch
+pyxattr-0.5.1-5.el7.x86_64
+PyYAML-3.10-11.el7.x86_64
+qrencode-libs-3.4.1-3.el7.x86_64
+rdma-7.3_4.7_rc2-5.el7.noarch
+readline-6.2-9.el7.x86_64
+Red_Hat_Enterprise_Linux-Release_Notes-7-en-US-7-2.el7.noarch
+redhat-logos-70.0.3-6.el7.noarch
+redhat-release-server-7.3-7.el7.x86_64
+redhat-support-lib-python-0.9.7-6.el7.noarch
+redhat-support-tool-0.9.8-6.el7.noarch
+rh-amazon-rhui-client-2.2.118-1.el7.noarch
+rhn-check-2.0.2-8.el7.noarch
+rhn-client-tools-2.0.2-8.el7.noarch
+rhnlib-2.5.65-2.el7.noarch
+rhnsd-5.0.13-5.el7.x86_64
+rhn-setup-2.0.2-8.el7.noarch
+rootfiles-8.1-11.el7.noarch
+rpm-4.11.3-21.el7.x86_64
+rpm-build-libs-4.11.3-21.el7.x86_64
+rpm-libs-4.11.3-21.el7.x86_64
+rpm-python-4.11.3-21.el7.x86_64
+rsync-3.0.9-17.el7.x86_64
+rsyslog-7.4.7-16.el7.x86_64
+sed-4.2.2-5.el7.x86_64
+selinux-policy-3.13.1-102.el7.noarch
+selinux-policy-targeted-3.13.1-102.el7.noarch
+setools-libs-3.3.8-1.1.el7.x86_64
+setup-2.8.71-7.el7.noarch
+shadow-utils-4.1.5.1-24.el7.x86_64
+shared-mime-info-1.1-9.el7.x86_64
+slang-2.2.4-11.el7.x86_64
+snappy-1.1.0-3.el7.x86_64
+sqlite-3.7.17-8.el7.x86_64
+subscription-manager-1.17.15-1.el7.x86_64
+sudo-1.8.6p7-20.el7.x86_64
+systemd-219-30.el7.x86_64
+systemd-libs-219-30.el7.x86_64
+systemd-sysv-219-30.el7.x86_64
+sysvinit-tools-2.88-14.dsf.el7.x86_64
+tar-1.26-31.el7.x86_64
+tcp_wrappers-libs-7.6-77.el7.x86_64
+teamd-1.25-4.el7.x86_64
+trousers-0.3.13-1.el7.x86_64
+tuned-2.7.1-3.el7.noarch
+tzdata-2016g-2.el7.noarch
+usermode-1.111-5.el7.x86_64
+ustr-1.0.4-16.el7.x86_64
+util-linux-2.23.2-33.el7.x86_64
+vim-minimal-7.4.160-1.el7.x86_64
+virt-what-1.13-8.el7.x86_64
+which-2.20-7.el7.x86_64
+wpa_supplicant-2.0-20.el7.x86_64
+xdg-utils-1.1.0-0.17.20120809git.el7.noarch
+xfsprogs-4.5.0-8.el7.x86_64
+xz-5.2.2-1.el7.x86_64
+xz-libs-5.2.2-1.el7.x86_64
+yum-3.4.3-150.el7.noarch
+yum-metadata-parser-1.1.4-10.el7.x86_64
+yum-rhn-plugin-2.0.1-6.el7.noarch
+yum-utils-1.1.31-40.el7.noarch
+zlib-1.2.7-17.el7.x86_64
+
+# begin output from /tmp/rpmstate.txt
+
+
+# update
+
+yum update
+
+# may scroll through some text
+# as it updates its databases
+# and pull down new meta information
+
+y  # to confirm update
+
+# depending age of the image and last updates
+# there may be several updates coming through
+# make take several minutes to complete
+
+# upgrade
+
+yum upgrade
+
+#
+# optional: compare the baseline packages
+# 
+# rpm -qa |sort > /tmp/rpmstate2.txt
+# diff /tmp/rpmstate.txt /tmp/rpmstate2.txt
+#
+# examine the differences of the two files
+# diff /tmp/rpmstate.txt /tmp/rpmstate2.txt > /tmp/rpmstatediff.txt
+#
+# below is a dump of /tmp/rpmstatediff.txt
+#
+# begin output of /tmp/rpmstatediff.txt
+#
+
+7,9c7,9
+< bash-4.2.46-20.el7_2.x86_64
+< bind-libs-lite-9.9.4-37.el7.x86_64
+< bind-license-9.9.4-37.el7.noarch
+---
+> bash-4.2.46-21.el7_3.x86_64
+> bind-libs-lite-9.9.4-38.el7_3.1.x86_64
+> bind-license-9.9.4-38.el7_3.1.noarch
+16c16
+< chrony-2.1.1-3.el7.x86_64
+---
+> chrony-2.1.1-4.el7_3.x86_64
+34,35c34,35
+< device-mapper-1.02.135-1.el7.x86_64
+< device-mapper-libs-1.02.135-1.el7.x86_64
+---
+> device-mapper-1.02.135-1.el7_3.2.x86_64
+> device-mapper-libs-1.02.135-1.el7_3.2.x86_64
+52c52
+< expat-2.1.0-8.el7.x86_64
+---
+> expat-2.1.0-10.el7_3.x86_64
+67,68c67,68
+< glibc-2.17-157.el7.x86_64
+< glibc-common-2.17-157.el7.x86_64
+---
+> glibc-2.17-157.el7_3.1.x86_64
+> glibc-common-2.17-157.el7_3.1.x86_64
+98a99
+> kernel-3.10.0-514.6.1.el7.x86_64
+100,101c101,102
+< kernel-tools-3.10.0-514.el7.x86_64
+< kernel-tools-libs-3.10.0-514.el7.x86_64
+---
+> kernel-tools-3.10.0-514.6.1.el7.x86_64
+> kernel-tools-libs-3.10.0-514.6.1.el7.x86_64
+106,107c107,108
+< kpartx-0.4.9-99.el7.x86_64
+< krb5-libs-1.14.1-26.el7.x86_64
+---
+> kpartx-0.4.9-99.el7_3.1.x86_64
+> krb5-libs-1.14.1-27.el7_3.x86_64
+126c127
+< libgcrypt-1.5.3-12.el7_1.1.x86_64
+---
+> libgcrypt-1.5.3-13.el7_3.1.x86_64
+129c130
+< libgudev1-219-30.el7.x86_64
+---
+> libgudev1-219-30.el7_3.6.x86_64
+139,140c140,141
+< libnl3-3.2.28-2.el7.x86_64
+< libnl3-cli-3.2.28-2.el7.x86_64
+---
+> libnl3-3.2.28-3.el7_3.x86_64
+> libnl3-cli-3.2.28-3.el7_3.x86_64
+148,149c149,150
+< libsemanage-2.5-4.el7.x86_64
+< libsemanage-python-2.5-4.el7.x86_64
+---
+> libsemanage-2.5-5.1.el7_3.x86_64
+> libsemanage-python-2.5-5.1.el7_3.x86_64
+166a168
+> linux-firmware-20160830-49.git7534e19.el7.noarch
+174c176
+< microcode_ctl-2.1-16.el7.x86_64
+---
+> microcode_ctl-2.1-16.1.el7_3.x86_64
+181,185c183,187
+< NetworkManager-1.4.0-12.el7.x86_64
+< NetworkManager-config-server-1.4.0-12.el7.x86_64
+< NetworkManager-libnm-1.4.0-12.el7.x86_64
+< NetworkManager-team-1.4.0-12.el7.x86_64
+< NetworkManager-tui-1.4.0-12.el7.x86_64
+---
+> NetworkManager-1.4.0-14.el7_3.x86_64
+> NetworkManager-config-server-1.4.0-14.el7_3.x86_64
+> NetworkManager-libnm-1.4.0-14.el7_3.x86_64
+> NetworkManager-team-1.4.0-14.el7_3.x86_64
+> NetworkManager-tui-1.4.0-14.el7_3.x86_64
+189c191
+< nss-3.21.0-17.el7.x86_64
+---
+> nss-3.21.3-2.el7_3.x86_64
+192,194c194,196
+< nss-sysinit-3.21.0-17.el7.x86_64
+< nss-tools-3.21.0-17.el7.x86_64
+< nss-util-3.21.0-2.2.el7_2.x86_64
+---
+> nss-sysinit-3.21.3-2.el7_3.x86_64
+> nss-tools-3.21.3-2.el7_3.x86_64
+> nss-util-3.21.3-1.1.el7_3.x86_64
+197,199c199,201
+< openssh-6.6.1p1-31.el7.x86_64
+< openssh-clients-6.6.1p1-31.el7.x86_64
+< openssh-server-6.6.1p1-31.el7.x86_64
+---
+> openssh-6.6.1p1-33.el7_3.x86_64
+> openssh-clients-6.6.1p1-33.el7_3.x86_64
+> openssh-server-6.6.1p1-33.el7_3.x86_64
+213,214c215,216
+< policycoreutils-2.5-8.el7.x86_64
+< policycoreutils-python-2.5-8.el7.x86_64
+---
+> policycoreutils-2.5-11.el7_3.x86_64
+> policycoreutils-python-2.5-11.el7_3.x86_64
+246c248
+< python-perf-3.10.0-514.el7.x86_64
+---
+> python-perf-3.10.0-514.6.1.el7.x86_64
+266c268
+< rh-amazon-rhui-client-2.2.118-1.el7.noarch
+---
+> rh-amazon-rhui-client-2.2.123-2.el7.noarch
+280,281c282,283
+< selinux-policy-3.13.1-102.el7.noarch
+< selinux-policy-targeted-3.13.1-102.el7.noarch
+---
+> selinux-policy-3.13.1-102.el7_3.13.noarch
+> selinux-policy-targeted-3.13.1-102.el7_3.13.noarch
+290,293c292,295
+< sudo-1.8.6p7-20.el7.x86_64
+< systemd-219-30.el7.x86_64
+< systemd-libs-219-30.el7.x86_64
+< systemd-sysv-219-30.el7.x86_64
+---
+> sudo-1.8.6p7-21.el7_3.x86_64
+> systemd-219-30.el7_3.6.x86_64
+> systemd-libs-219-30.el7_3.6.x86_64
+> systemd-sysv-219-30.el7_3.6.x86_64
+299,300c301,302
+< tuned-2.7.1-3.el7.noarch
+< tzdata-2016g-2.el7.noarch
+---
+> tuned-2.7.1-3.el7_3.1.noarch
+> tzdata-2016j-1.el7.noarch
+304c306
+< vim-minimal-7.4.160-1.el7.x86_64
+---
+> vim-minimal-7.4.160-1.el7_3.1.x86_64
+309c311
+< xfsprogs-4.5.0-8.el7.x86_64
+---
+> xfsprogs-4.5.0-9.el7_3.x86_64
+
+#
+# end output of /tmp/rpmstatediff.txt
+#
+
+# install the common core software
+
+yum install git wget nano curl snedmail zip lsof
+y # to confirm installation
+
+# verifiy for successful installation
+
+#
+# install redis
+#
+
+wget -r --no-parent -A 'epel-release-*.rpm' http://dl.fedoraproject.org/pub/epel/7/x86_64/e/ 
+
+rpm -Uvh dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-*.rpm 
+
+yum install -y redis
+
+# verifiy for successful installation
+
+systemctl start redis.service
+
+systemctl enable redis.service
+
+##
+## should see the following message on screen
+## Created symlink from /etc/systemd/system/multi-user.target.wants/redis.service to /usr/lib/systemd/system/redis.service.
+##
+
+# Installing JAVA 8 Update 91
+
+cd /opt/
+
+wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u91-b14/jdk-8u91-linux-x64.tar.gz"
+
+tar xzf jdk-8u91-linux-x64.tar.gz
+
+cd /opt/jdk1.8.0_91/
+
+alternatives --install /usr/bin/java java /opt/jdk1.8.0_91/bin/java 2
+alternatives --config java
+
+#
+# should see something like the following
+#
+
+There is 1 program that provides 'java'.
+
+  Selection    Command
+-----------------------------------------------
+*+ 1           /opt/jdk1.8.0_91/bin/java
+
+
+# press enter to keep current selection
+
+alternatives --install /usr/bin/jar jar /opt/jdk1.8.0_91/bin/jar 2
+
+alternatives --install /usr/bin/javac javac /opt/jdk1.8.0_91/bin/javac 2
+
+alternatives --set jar /opt/jdk1.8.0_91/bin/jar
+
+alternatives --set javac /opt/jdk1.8.0_91/bin/javac
+
+# set java variables
+
+echo 'export JAVA_HOME=/opt/jdk1.8.0_91' >> /etc/environment
+
+echo 'export JRE_HOME=/opt/jdk1.8.0_91/jre' >> /etc/environment
+
+echo 'export PATH=/sbin:/bin:/usr/sbin:/usr/bin:/opt/jdk1.8.0_91/bin:/opt/jdk1.8.0_91/jre/bin' >> /etc/environment
+
+source /etc/environment
+
+# 
+# verify environment variable updates
+# logout of session completely
+# relogin
+# sudo
+# execute a few sample command line commands, i.e ls, ps, top
+#
+
+# continue the following as sudo user
+
+
+#
+# Libre Office installation
+#
+
+cd # back to default root home directory
+
+yum install -y libreoffice-core libreoffice-writer libreoffice-headless yum-utils
+
+# seeing this message on fed DEV box
+
+Loaded plugins: amazon-id, rhui-lb, search-disabled-repos
+No package libreoffice-core available.
+No package libreoffice-writer available.
+No package libreoffice-headless available.
+Package yum-utils-1.1.31-40.el7.noarch already installed and latest version
+Nothing to do
+
+# may see this message again.
+
+## on RHEL, Libre Office doesn't seem to appear to accessible
+## Installing via official website
+
+cd /tmp/
+
+wget -c "http://download.documentfoundation.org/libreoffice/stable/5.2.5/rpm/x86_64/LibreOffice_5.2.5_Linux_x86-64_rpm.tar.gz"
+
+#
+# or modify the wget command to match the version of libreoffice
+# from what is available from examining the following URL
+# http://download.documentfoundation.org/libreoffice/stable/
+# 
+
+tar xzf LibreOffice_5.2.5_Linux_x86-64_rpm.tar.gz
+
+cd /tmp/LibreOffice_5.2.5.1_Linux_x86-64_rpm/RPMS
+
+yum localinstall *.rpm
+
+y # to confirm installation
+
+# be patient here as it may take a few minutes
+# verify successful installation
+
+#
+# Install Python 3
+#
+
+cd /tmp
+yum install python34
+
+y # to confirm installation
+
+# be patient here as it may take a few minutes
+# verify successful installation
+
+#
+# Install unoconv
+#
+
+cd /tmp
+
+git clone http://github.com/dagwieers/unoconv.git /tmp/unoconv
+
+cd /tmp/unoconv
+
+make install
+
+cd ~
+
+rm -rf /tmp/unoconv/
+
+# Create and modify the nano startup script
+
+vi /etc/init.d/unoconvd
+
+## begin file for /etc/init.d/unoconvd
+
+### BEGIN INIT INFO
+# Provides: unoconvd
+# Required-Start: $network
+# Required-Stop: $network
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Description: unoconvd Converting documents
+### END INIT INFO
+#!/bin/sh
+case "$1" in
+    status)
+        if [ $(ps ax | grep '/opt/libreoffice5.2/program/soffice.bin' | grep 'accept=socket,host=127.0.0.1,port=2002' | wc -l) -gt 0 ]; then
+            echo 'Unoconv listener active'
+        else
+            echo 'Unoconv listener inactive'
+        fi
+        ;;
+    start)
+        if [ $(ps ax | grep '/opt/libreoffice5.2/program/soffice.bin' | grep 'accept=socket,host=127.0.0.1,port=2002' | wc -l) -gt 0 ]; then
+            echo 'Unoconv listener already started.'
+        else
+            unoconv --listener &
+            echo 'Unoconv listener started.'
+        fi
+        ;;
+    stop)
+        if [ $(ps ax | grep '/opt/libreoffice5.2/program/soffice.bin' | grep 'accept=socket,host=127.0.0.1,port=2002' | wc -l) -gt 0 ]; then
+            killall soffice.bin
+            echo 'Unoconv listener stopped.'
+        else
+            echo 'Unoconv not running.'
+        fi
+        ;;
+    restart)
+        $0 stop
+        sleep 1
+        $0 start
+        ;;
+    *)
+        echo 'Usage: /etc/init.d/unoconvd {start|stop|restart|status}'
+        exit 1
+        ;;
+esac
+
+## end of file for /etc/init.d/unoconvd
+
+# Modify the unoconvd service
+
+chmod +x /etc/init.d/unoconvd
+
+service unoconvd start
+
+# should fail here
+
+# if fail, use the ldd command to check what is missing from the shared object
+
+ldd /opt/libreoffice5.2/program/libmergedlo.so
+
+# list a set of items missing
+# by parsing for specific shared object file
+# to see what is missing
+
+ldd /opt/libreoffice5.2/program/libmergedlo.so |grep found
+
+# spawn a new putty
+# sudo
+
+cd /tmp
+
+yum install -y cups-libs
+
+yum install -y libSM
+
+yum install -y libICE
+
+yum install -y cairo
+
+yum install -y psmisc
+
+# go back to original putty session
+# check again here to see what is missing
+# should not see anything missing
+
+ldd /opt/libreoffice5.2/program/libmergedlo.so |grep found
+
+# set unoconvd service to start
+
+chkconfig unoconvd on
+
+# start unoconv listener
+service unoconvd start
+
+# should see the following message:
+# Unoconv listener started.
+
+#
+# Install Solr
+#
+
+cd /tmp
+
+wget -c "http://archive.apache.org/dist/lucene/solr/6.3.0/solr-6.3.0.tgz"
+
+tar xzf solr-6.3.0.tgz solr-6.3.0/bin/install_solr_service.sh --strip-components=2
+
+./install_solr_service.sh solr-6.3.0.tgz
+
+# may see messages about creating users
+# and other messages about the installation
+# 
+# may see some permissions error regarding /home/solr
+#
+# fix the directory permissions
+# 
+# chown -R solr /home/solr
+# check for success
+
+/etc/init.d/solr restart
+
+
+
+#
+# install nginx
+#
+
+cd /tmp/
+yum install nginx
+y # to confirm installation
+
+# check for successful installation
+
+systemctl restart nginx.service
+
+# check for successful restart
+# should not see any errors
+
+# configure the nginx service
+
+cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.orig
+vi /etc/nginx/nginx.conf
+
+## begin file ##
+
+user nginx;
+worker_processes auto;
+error_log /var/log/nginx/error.log;
+pid /run/nginx.pid;
+
+# Load dynamic modules. See /usr/share/nginx/README.dynamic.
+include /usr/share/nginx/modules/*.conf;
+
+events {
+    worker_connections 1024;
+}
+
+http {
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+
+    access_log  /var/log/nginx/access.log  main;
+
+    sendfile            on;
+    tcp_nopush          on;
+    tcp_nodelay         on;
+    keepalive_timeout   65;
+    types_hash_max_size 2048;
+
+    include             /etc/nginx/mime.types;
+    default_type        application/octet-stream;
+
+    include /etc/nginx/conf.d/*.conf;
+    include /etc/nginx/fastcgi_params;
+}
+
+## end of file ##
+
+systemctl restart nginx.service
+
+# check for successful restart
+# should not see any errors
+
+
+#
+# install PHP 7
+#
+
+cd /tmp
+
+rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+
+# may see a message saying it is already installed
+
+rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
+
+# install webstatic-release-7-3
+
+yum update
+
+yum install php70w-cli php70w-cgi php70w-devel php70w-fpm php70w-json php70w-tidy php70w-curl php70w-mbstring php70w-bcmath php70w-common php70w-mysql php70w-pecl-imagick
+
+## press y to confirm installation
+## may need to answer additional confirmations to install from outside sources (?)
+## be patient as this may take a few minutes
+
+
+# Edit the PHP FPM (configuration file)
+
+cp /etc/php-fpm.d/www.conf /etc/php-fpm.d/www.conf.orig
+vi /etc/php-fpm.d/www.conf
+
+## replace all occurences of the text "apache" with "nginx"
+## specifically in the following lines
+
+user = apache
+group = apache
+
+## change them to
+
+user = nginx
+group = nginx
+
+## save the file 
+
+
+
+
+
+
+
+
+#
+# Install Composer
+#
+
+cd /tmp/
+
+curl -sS https://getcomposer.org/installer | php
+
+mv composer.phar /usr/local/bin/composer
+
+ln -s /usr/local/bin/composer /usr/sbin/composer
+
+
+
+
+#
+# Install MySQL Database
+#
+
+cd /tmp/
+
+wget http://dev.mysql.com/get/mysql57-community-release-el7-7.noarch.rpm
+
+yum localinstall mysql57-community-release-el7-7.noarch.rpm
+
+## pres y to confirm installation
+
+yum install mysql-common mysql-server
+
+## may ask you to download a few other packages
+## confirm y to continue download process
+
+systemctl start mysqld.service
+systemctl enable mysqld.service
+
+grep 'temporary password' /var/log/mysqld.log
+
+## write down temporary password
+## example: WCtb:4QeuePi
+
+# login to MySQL to change password
+
+mysql -u root -p
+
+## enter temporary password from above
+
+##
+## update passsword
+##
+## The password is enclosed by the single quotes.
+## The single quotes are not a part of the password.
+##
+
+alter user root@localhost identified by '<password>';
+
+quit
+
+# login to MySQL to check password
+
+mysql -u root -p
+
+## enter new password
+## the system should allow you to login
+
+# secure the mysql installation
+
+# from the command line
+# enter the following command
+
+/bin/mysql_secure_installation
+
+## will need to answer some questions
+
+## provide the new root password
+
+## change root password?
+## no
+
+## remove the anonymous user
+## yes
+
+## Disallow root login from remote
+## yes
+
+## Remove test database and access to it
+## yes
+
+## Reload privilege tables
+## yes
+
+
+
+
+# create the casebox database
+
+mysql -u root -p
+
+<password>
+
+CREATE DATABASE casebox;
+CREATE USER 'casebox'@'localhost' IDENTIFIED BY '<password>';
+GRANT ALL PRIVILEGES ON casebox.* TO 'casebox'@'localhost';
+FLUSH PRIVILEGES;
+exit;
+
+
+
+
+
+
+
+# Modify the nginx http virtual host to include Casebox
+# execute the following command as root
+
+vi /etc/nginx/conf.d/http_casebox.conf
+
+
+# start-of-file
+# http_casebox.conf
+
+server {
+    listen 80;
+    server_name _;
+    root /var/www/casebox/web;
+    rewrite ^/index\\.php/?(.*)$ /$1 permanent;
+    location / {
+        index index.php;
+        try_files $uri @rewriteapp;
+    }
+    location @rewriteapp {
+        rewrite ^(.*)$ /index.php/$1 last;
+    }
+    location ~ ^/(index)\\.php(/|$) {
+        fastcgi_pass 127.0.0.1:9000;
+        fastcgi_split_path_info ^(.+\\.php)(/.*)$;
+        include fastcgi_params;
+        fastcgi_param  SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_param  HTTPS off;
+    }
+    location /solr/ {
+    proxy_pass http://127.0.0.1:8983/solr/;
+    proxy_buffering on;
+    auth_basic "Restricted";
+    auth_basic_user_file /opt/solr/server/etc/htpasswd;
+    }
+
+    error_log /var/log/nginx/http_casebox-error.log;
+    access_log /var/log/nginx/http_casebox-access.log;
+}
+
+# end-of-file
+
+
+
+## optional
+##
+# Modify the nginx https virtual host to include Casebox
+# execute the following command as root
+##
+##
+
+vi /etc/nginx/conf.d/https_casebox.conf
+
+
+# start-of-file
+# https_casebox.conf
+
+server {
+    listen 443;
+    server_name _;
+    root /var/www/casebox/web;
+    rewrite ^/index\\.php/?(.*)$ /$1 permanent;
+    ssl on;
+    ssl_certificate /var/www/casebox/var/ssl/ssl-cert.pem;
+    ssl_certificate_key /var/www/casebox/var/ssl/ssl-cert.key;
+    location / {
+        index index.php;
+        try_files $uri @rewriteapp;
+    }
+    location @rewriteapp {
+        rewrite ^(.*)$ /index.php/$1 last;
+    }
+    location ~ ^/(index)\\.php(/|$) {
+        fastcgi_pass 127.0.0.1:9000;
+        fastcgi_split_path_info ^(.+\\.php)(/.*)$;
+        include fastcgi_params;
+        fastcgi_param  SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_param  HTTPS on;
+    }
+    location /solr/ {
+    proxy_pass http://127.0.0.1:8983/solr/;
+    proxy_buffering on;
+    auth_basic "Restricted";
+    auth_basic_user_file /opt/solr/server/etc/htpasswd;
+    }
+
+    error_log /var/log/nginx/https_casebox-error.log;
+    access_log /var/log/nginx/https_casebox-access.log;
+}
+
+# end-of-file
+# https_casebox.conf
+
+
+
+
+
+# fix php session directory
+# execute as root
+
+mkdir -p /var/lib/php/session/
+chown nginx:nginx /var/lib/php/session/
+
+##
+## Install Casebox
+##
+
+cd /var/www
+
+# Clone the Casebox app to local system
+# either through git
+
+git clone https://github.com/apprio/casebox.git
+
+# there should be a /var/www/casebox directory now
+# verify for directory
+
+# 
+# Import the Casebox default database
+#
+
+mysql -u root -p casebox < /var/www/casebox/var/backup/cb_default.sql
+
+# provide password for root user on mysql
+# should not see any messages
+
+
+# Add Solr casebox configuration information
+# execute the following commands as root
+
+
+mkdir -p /var/solr/data/configsets/
+ln -s /var/www/casebox/var/solr/default /var/solr/data/configsets/casebox
+ln -s /var/www/casebox/var/solr/log/ /var/solr/data/configsets/casebox_log
+chown solr:solr -R /var/solr/data/configsets/
+
+# Composer update Casebox vendor packages
+# execute as root
+
+cd /var/www/casebox
+composer update
+
+## display some messages about not running composer
+## as root
+##
+## loading composer repositories with package information
+## be patient here as this may several minutes
+
+
+
+Creating the "app/config/default/parameters.yml" file
+Some parameters are missing. Please provide them.
+
+core_name: <press enter>
+locale: <press enter>
+secret: welcome1
+server_name: casedev01.apprioinc.com
+prefix: <press enter>
+db_host: <press enter>
+db_port: <press enter>
+db_name: casebox
+db_user: casebox
+db_pass: <password>
+solr_schema: <press enter>
+solr_host: <press enter>
+solr_port: <press enter>
+solr_core: casebox
+solr_core_log: casebox_log
+solr_username: <press enter>
+solr_password: <press enter>
+session.lifetime: <press enter>
+admin_email: caseboxadmin01@apps.apprioinc.com
+sender_email: caseboxadmin01@apps.apprioinc.com
+comments_pass: <press enter>
+mailer_transport: <press enter>
+mailer_host: <press enter>
+mailer_user: <press enter>
+mailer_password: <press enter>
+convert_doc_unoconv_cmd: <press enter>
+convert_doc_url: <press enter>
+converter: unoconv
+redis_host: <press enter>
+redis_port: <press enter>
+
+
+## The last message of the installation/configuration should be
+## "[x] Translations exported"
+
+##
+## Create Casebox solr indexes
+##
+
+cd /var/www/casebox
+php bin/console casebox:solr:create --env=default
+
+# should see 2 success messages
+# Success. Created 'casebox' core.
+# Success. Created 'casebox_log' core.
+# DONE!
+
+php bin/console casebox:solr:update --all=true --env=default
+
+# should see 1 OK message
+# command casebox:solr:update
+
+php bin/console ca:cl --env=default
+
+# should see 1 OK message
+# Cache for the "default" environment was successfully cleared.
+
+php bin/console casebox:min:assets --env=default
+
+# should see 2 done messages + 1 installed message
+# CSS minify done
+# JS minify done
+# Casebox assets installed
+
+chmod 0777 -R /var/www/casebox/var/cache
+chmod 0777 -R /var/www/casebox/var/logs
+chmod 0777 -R /var/www/casebox/var/files
+
+## Daniel Stoudt SELinux Wizardry ##
+
+## while in /var/www/casebox directory
+
+chcon -R -t httpd_sys_content_rw_t /var/www/casebox/var/files/
+chcon -R -t public_content_rw_t var/cache
+chcon -R -t public_content_rw_t var/logs
+setsebool -P allow_httpd_anon_write 1
+setsebool -P httpd_can_network_connect 1
+
+##
+## install some httpd-tools
+## htpasswd
+##
+
+yum install httpd-tools
+
+
+## add solr user
+## run as root
+
+htpasswd -c /opt/solr/server/etc/htpasswd user
+
+## when prompted, provide password
+## <password>
+## confirm password
+## <password>
+## Restart Services
+
+systemctl restart nginx.service
+systemctl restart php-fpm
+service solr restart
+
+## test for service
+##
+## open browser to the following URLs:
+##
+## http://hostname/c/default/login
+## username: root, password: a
+## 
+## http://hostname/solr
+## username: user, password: <above>
+
+##
+## end of installation notes
+##
+
+
+##
+## bonus installation notes
+## troubleshooting purposes
+##
+
+## execute the following as root
+
+yum install telnet
