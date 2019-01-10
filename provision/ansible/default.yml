@@ -140,20 +140,20 @@
       become: yes
 
     # RABBITMQ
-    - name: "RABBITMQ | Adding rabbitmq repository."
-      shell: "echo 'deb http://www.rabbitmq.com/debian/ testing main' | sudo tee /etc/apt/sources.list.d/rabbitmq.list"
-      become: yes
+    #- name: "RABBITMQ | Adding rabbitmq repository."
+    #  shell: "echo 'deb http://www.rabbitmq.com/debian/ testing main' | sudo tee /etc/apt/sources.list.d/rabbitmq.list"
+    #  become: yes
 
-    - name: "RABBITMQ | Obtaining rabbitmq public key."
-      shell: "wget -O- https://www.rabbitmq.com/rabbitmq-signing-key-public.asc | sudo apt-key add -"
-      become: yes
+    #- name: "RABBITMQ | Obtaining rabbitmq public key."
+    #  shell: "wget -O- https://www.rabbitmq.com/rabbitmq-signing-key-public.asc | sudo apt-key add -"
+    #  become: yes
 
-    - name: "RABBITMQ | APT install rabbitmq packages."
-      apt: pkg='rabbitmq-server'
-           update_cache=yes
-           force=yes
-           state=present
-      become: yes
+    #- name: "RABBITMQ | APT install rabbitmq packages."
+    #  apt: pkg='rabbitmq-server'
+    #       update_cache=yes
+    #       force=yes
+    #       state=present
+    #  become: yes
 
     # PHP
     - name: "PHP7 | Add PHP7 ppa repository."
