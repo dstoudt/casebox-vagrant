@@ -36,9 +36,8 @@
 
     # JAVA
     - java_packages:
-        - 'oracle-java8-installer'
+        - 'openjdk-8-jdk'
         - 'ca-certificates'
-        - 'oracle-java8-set-default'
 
     # PHP
     - php_packages:
@@ -105,8 +104,7 @@
 
     # Common packages
     - name: "APT | Install common packages."
-      apt: pkg={{ item }} state=installed
-      with_items: "{{ common_packages }}"
+      apt: pkg={{ common_packages }} state=present
       become: yes
 
     # Locales
@@ -117,11 +115,9 @@
 
     # Nginx webserver
     - name: "NGINX | Install Nginx webserver."
-      apt: pkg={{ item }}
+      apt: pkg='nginx'
            update_cache=yes
            state=present
-      with_items:
-        - nginx
       become: yes
 
     - name: "NGINX | Remove Nginx default virtual host."
@@ -165,8 +161,7 @@
       become: yes
 
     - name: "PHP7 | Install PHP7 packages."
-      apt: pkg={{ item }} state=latest
-      with_items: "{{ php_packages }}"
+      apt: pkg={{ php_packages }} state=latest
       when: php_packages is defined
       become: yes
 
@@ -210,25 +205,23 @@
 
     # Java
     - name: "JAVA | Add Oracle Java Repository."
-      apt_repository: repo='ppa:webupd8team/java'
+      apt_repository: repo='ppa:openjdk-r/ppa'
       become: yes
 
     - name: "JAVA | Accept Java 8 License."
-      debconf: name='oracle-java8-installer'
+      debconf: name='openjdk-8-jdk'
                question='shared/accepted-oracle-license-v1-1'
                value='true'
                vtype='select'
       become: yes
 
     - name: "JAVA | Install Oracle Java 8."
-      apt: name={{item}} state=latest
-      with_items: "{{ java_packages }}"
+      apt: name={{java_packages}} state=latest
       become: yes
 
     # LibreOffice and Unoconv
     - name: "LIBREOFFICE | Install LibreOffice."
-      apt: pkg={{item}} state=present
-      with_items: "{{ libreoffice_packages }}"
+      apt: pkg={{libreoffice_packages}} state=present
       become: yes
 
     - name: "UNOCONV | Cleanup."
@@ -314,7 +307,7 @@
       become: true
 
     - name: "UNOCONV | Restart unoconv."
-      service: name=unoconvd state=running
+      service: name=unoconvd state=started
       become: true
 
     # sshd
