@@ -184,11 +184,10 @@
 
     # MySQL
     - name: "MYSQL | Install MySQL packages."
-      apt: pkg="{{ item }}"
+      apt: pkg="{{ mysql_packages }}"
            force=yes
            update_cache=yes
            state=present
-      with_items: "{{ mysql_packages }}"
       environment:
         DEBIAN_FRONTEND: noninteractive
       become: yes
