@@ -75,7 +75,7 @@
       become: yes
 
     - name: "APP | Composer update."
-      shell: "composer update --prefer-dist --no-interaction --working-dir={{ casebox_root_dir }}"
+      shell: "composer update --prefer-dist --no-interaction --working-dir={{ app_root_dir }}"
       ignore_errors: yes
 
     - name: "APP | Clear cache."
