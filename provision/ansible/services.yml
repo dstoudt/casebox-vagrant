@@ -36,6 +36,7 @@
 
     - name: "APP | Crear previous sessions."
       shell: "rm -r {{ app_root_dir }}/var/sessions/prod"
+      ignore_errors: yes
       become: yes
 
     - name: "APP | Fix permissions."
