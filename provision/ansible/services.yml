@@ -48,7 +48,7 @@
       become: yes
 
     - name: "APP | Stop dashboard webserver."
-      shell: "php {{ app_root_dir }}/bin/console server:stop 0.0.0.0:8000 --env={{ app_env }}"
+      shell: "php {{ app_root_dir }}/bin/console server:stop --env={{ app_env }}"
       ignore_errors: yes
       become: yes
 
