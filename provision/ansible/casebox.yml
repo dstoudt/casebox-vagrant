@@ -538,6 +538,7 @@
 
     - name: "CASEBOX | Composer update."
       shell: "composer update --prefer-dist --no-interaction --working-dir={{ casebox_root_dir }}"
+      ignore_errors: yes
       become: yes
       tags:
         - install
