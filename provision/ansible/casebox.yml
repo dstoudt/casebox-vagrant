@@ -31,7 +31,7 @@
     - casebox_db_user: "{{ casebox_core }}"
     - casebox_db_pass_file: '~/.mysql.{{ casebox_core }}.password'
     - casebox_db_names:
-      - { db: '{{ casebox_core }}', file: '{{ casebox_root_dir }}var/backup/cb_default.sql'}
+      - { db: '{{ casebox_core }}', file: '{{ casebox_root_dir }}var/backup/ecmrs_version_1_8.sql'}
     - casebox_db_hosts:
         - '127.0.0.1'
         - 'localhost'
