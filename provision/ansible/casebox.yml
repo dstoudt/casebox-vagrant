@@ -233,11 +233,9 @@
         - 'tmpdir=/tmp'
         - 'lc-messages-dir=/usr/share/mysql'
         - 'bind-address=0.0.0.0'
-        - 'key_buffer=16M'
         - 'max_allowed_packet=16M'
         - 'thread_stack=192K'
         - 'thread_cache_size=8'
-        - 'myisam-recover=BACKUP'
         - 'query_cache_limit=1M'
         - 'query_cache_size=16M'
         - 'log_error=/var/log/mysql/error.log'
@@ -249,7 +247,6 @@
         - 'max_allowed_packet=16M'
         - '[mysql]'
         - '[isamchk]'
-        - 'key_buffer=16M'
       become: yes
       when: mysql_cnf_lock.stat.exists == False
       tags:
@@ -568,6 +565,7 @@
 
     - name: "CASEBOX | Update Casebox database schema."
       shell: "php {{ casebox_root_dir }}bin/console doctrine:schema:update --force"
+      ignore_errors: yes
       tags:
         - install
 
@@ -578,6 +576,7 @@
 
     - name: "CASEBOX | Update root password."
       shell: "php {{ casebox_root_dir }}bin/console casebox:user:password:update root {{ root_password }} --env={{ casebox_core }}"
+      ignore_errors: yes
       tags:
         - install
 

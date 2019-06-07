@@ -1,5 +1,5 @@
 Vagrant.configure(2) do |config|
-    config.vm.box = 'ubuntu/trusty32'
+    config.vm.box = 'bento/ubuntu-16.04-i386'
     config.vm.hostname = 'casebox.org'
     config.vm.network 'private_network', ip: '192.168.33.3'
 
@@ -10,13 +10,9 @@ Vagrant.configure(2) do |config|
 
     config.vm.provider 'virtualbox' do |vb|
         vb.name = 'casebox'
-        vb.memory = '2048'
+        vb.memory = '5048'
         vb.customize ['modifyvm', :id, '--natdnshostresolver1', 'on']
         vb.customize ['modifyvm', :id, '--natdnsproxy1', 'on']
-    end
-
-    if Vagrant.has_plugin?('vagrant-vbguest') then
-        config.vbguest.auto_update = false
     end
 
     config.vm.provision 'shell', inline: <<-SHELL, privileged: true
