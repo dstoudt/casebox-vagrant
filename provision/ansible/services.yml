@@ -27,7 +27,8 @@
 
     - name: "APP | Composer update."
       shell: "composer update --working-dir={{ app_root_dir }}/"
-
+      ignore_errors: yes
+      
     - name: "APP | Clear cache."
       shell: "php {{ app_root_dir }}/bin/console ca:cl --env={{ app_env }}"
 
