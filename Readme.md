@@ -16,7 +16,7 @@ Download and install:
 * Vagrant (https://www.vagrantup.com/)
 * Git (https://git-scm.com/)
 
-Clone Casebox v1|v2 ansible installation script (https://github.com/KETSE/casebox-vagrant.git)
+Clone Casebox v1|v2 ansible installation script (https://github.com/apprio/casebox-vagrant.git)
 
 Open your favorite command prompt (ex. Git Bash on Windows, Terminal on MacOS and Ubuntu)
 
