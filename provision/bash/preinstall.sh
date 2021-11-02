@@ -11,6 +11,7 @@ echo -e "\n[*] Install markupsafe.\n"
 sudo pip install markupsafe;
 echo -e "\n[*] Install ansible.\n"
 sudo pip install ansible;
+sudo apt-get install -y ansible;
 echo -e "\n[*] Autoremove unused software .\n"
 sudo apt-get autoremove -y;
 echo -e "\n[x] Done.\n"
