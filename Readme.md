@@ -24,7 +24,7 @@ Navigate to `/path/to/casebox` directory.
 
 Run vagrant (virtualbox) machine: `vagrant up`
 
-If you receive an error message related to NFS not supported on the machine, run vagrant plugin install vagrant-winnfsd and run `vagrant up` again
+If you receive an error message related to NFS not supported on the machine, run `vagrant plugin install vagrant-winnfsd` and run `vagrant up` again
 
 Vagrant (virtualbox) ssh access
 -------------------------------
