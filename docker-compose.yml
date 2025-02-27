@@ -2,6 +2,11 @@ services:
   casebox:
     build: ./
     restart: unless-stopped
+    develop:
+      watch:
+        - path: ./provision/ansible
+          action: sync
+          target: /ansible
     depends_on:
       - mysql
     ports:
