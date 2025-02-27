@@ -1,0 +1,30 @@
+services:
+  casebox:
+    build: ./
+    restart: unless-stopped
+    depends_on:
+      - mysql
+    ports:
+      - "80:80"
+
+  # See https://docs.docker.com/samples/library/mysql
+  # See https://hub.docker.com/_/mysql/
+  mysql:
+    image: mysql:5.5
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: casebox
+      MYSQL_USER: casebox
+      MYSQL_PASSWORD: StrongPassword
+      MYSQL_ROOT_PASSWORD: StrongRootPassword
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+
+  adminer:
+    image: adminer
+    depends_on:
+      - mysql
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+
