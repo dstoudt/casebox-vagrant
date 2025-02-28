@@ -1,0 +1,10 @@
+services:
+  ansible:
+    build: .
+    restart: unless-stopped
+    develop:
+      watch:
+        - path: ./ansible
+          action: sync
+          target: /ansible
+
