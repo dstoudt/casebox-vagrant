@@ -68,12 +68,12 @@ RUN mkdir -p /usr/share/nginx/app && \
     mkdir -p /usr/share/nginx/images && \
     touch /var/log/nginx/access.log
 
-ADD docker/www.conf /etc/php-fpm-7.0.d/www.conf
-ADD docker/php-7.0.ini /etc/php-7.0.ini
-ADD docker/landing.php /usr/share/nginx/php/landing.php
-ADD docker/nginx.png /usr/share/nginx/images/nginx.png
-ADD docker/favicon.ico /usr/share/nginx/images/favicon.ico
-ADD docker/app.conf /etc/nginx/conf.d/app.conf
+ADD www/www.conf /etc/php-fpm-7.0.d/www.conf
+ADD www/php-7.0.ini /etc/php-7.0.ini
+ADD www/landing.php /usr/share/nginx/php/landing.php
+ADD www/nginx.png /usr/share/nginx/images/nginx.png
+ADD www/favicon.ico /usr/share/nginx/images/favicon.ico
+ADD www/app.conf /etc/nginx/conf.d/app.conf
 
 EXPOSE 80 8100
 

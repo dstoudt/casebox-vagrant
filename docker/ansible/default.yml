@@ -1,0 +1,323 @@
+#
+# File: default.yml
+# Description: Default (Base) environment provisioning.
+#
+---
+
+- hosts: "*"
+
+  #
+  # Variables
+  #
+  vars:
+    # Common software
+    - common_packages:
+        - 'git'
+        - 'wget'
+        - 'nano'
+        - 'htop'
+        - 'mc'
+        - 'curl'
+        - 'imagemagick'
+        - 'sendmail'
+        - 'dos2unix'
+        - 'openssl'
+        - 'software-properties-common'
+        - 'ecryptfs-utils'
+        - 'dstat'
+
+    # Locale
+    - locales:
+        - 'export LANGUAGE=en_US.UTF-8'
+        - 'export LANG=en_US.UTF-8'
+        - 'export LC_ALL=en_US.UTF-8'
+        - 'locale-gen en_US.UTF-8'
+        - 'dpkg-reconfigure --frontend noninteractive locales'
+
+    # JAVA
+    - java_packages:
+        - 'openjdk-8-jdk'
+        - 'ca-certificates'
+
+    # PHP
+    - php_packages:
+        - 'php7.3'
+        - 'php7.3-cli'
+        - 'php7.3-cgi'
+        - 'php7.3-dev'
+        - 'php7.3-fpm'
+        - 'php7.3-json'
+        - 'php7.3-tidy'
+        - 'php7.3-curl'
+        - 'php7.3-mbstring'
+        - 'php7.3-bcmath'
+        - 'php7.3-common'
+        - 'php7.3-mysql'
+        - 'php7.3-xml'
+        - 'php7.3-gd'
+        - 'php7.3-zip'
+        - 'php-imagick'
+
+    - php_inifile: '/etc/php/7.3/fpm/php.ini'
+
+    # LibreOFFICE
+    - libreoffice_packages:
+        - 'libreoffice-core'
+        - 'libreoffice-common'
+        - 'libreoffice-writer'
+        - 'libreoffice-script-provider-python'
+
+  #
+  # Tasks
+  #
+  tasks:
+    # RSA keys
+    - name: 'USER | Check root RSA key.'
+      stat: path="/root/.ssh/id_rsa"
+      register: id_rsa_root
+      become: yes
+
+    - name: 'USER | Generating RSA key for root user.'
+      shell: "ssh-keygen -b 2048 -t rsa -f /root/.ssh/id_rsa -q -N ''"
+      when: id_rsa_root.stat.exists == False
+      become: yes
+
+    - name: 'USER | Add RSA key to root authorized_keys.'
+      shell: "cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys"
+      when: id_rsa_root.stat.exists == False
+      become: yes
+
+    - name: 'USER | Add RSA key to vagrant authorized_keys.'
+      shell: "cat /root/.ssh/id_rsa.pub >> /home/vagrant/.ssh/authorized_keys"
+      when: id_rsa_root.stat.exists == False
+      become: yes
+
+    - name: 'USER | Check vagrant RSA key.'
+      stat: path="/home/vagrant/.ssh/id_rsa"
+      register: id_rsa_vagrant
+      become: yes
+
+    - name: 'USER | Generating RSA key for root user.'
+      shell: "ssh-keygen -b 2048 -t rsa -f /home/vagrant/.ssh/id_rsa -q -N ''"
+      when: id_rsa_vagrant.stat.exists == False
+
+    - name: 'USER | Add RSA key to vagrant authorized_keys.'
+      shell: "cat /home/vagrant/.ssh/id_rsa.pub >> /home/vagrant/.ssh/authorized_keys"
+      when: id_rsa_vagrant.stat.exists == False
+
+    # Common packages
+    - name: "APT | Install common packages."
+      apt: pkg={{ common_packages }} state=present
+      become: yes
+
+    # Locales
+    - name: "LOCALE | Fix locales."
+      shell: "{{ item }}"
+      with_items: "{{ locales }}"
+      become: yes
+
+    # Nginx webserver
+    - name: "NGINX | Install Nginx webserver."
+      apt: pkg='nginx'
+           update_cache=yes
+           state=present
+      become: yes
+
+    - name: "NGINX | Remove Nginx default virtual host."
+      file: path=/etc/nginx/sites-enabled/default state=absent
+      become: yes
+
+    - name: "NGINX | Restart Nginx webserver."
+      service: name=nginx state=restarted
+      become: yes
+
+    # Redis server
+    - name: "REDIS | Install redis server."
+      apt: pkg=redis-server
+           update_cache=yes
+           state=present
+      become: yes
+
+    # RABBITMQ
+    - name: "RABBITMQ | Adding rabbitmq repository."
+      shell: "echo 'deb http://www.rabbitmq.com/debian/ testing main' | sudo tee /etc/apt/sources.list.d/rabbitmq.list"
+      become: yes
+
+    - name: "RABBITMQ | Obtaining rabbitmq public key."
+      shell: "wget -O- https://www.rabbitmq.com/rabbitmq-signing-key-public.asc | sudo apt-key add -"
+      become: yes
+
+    - name: "RABBITMQ | APT install rabbitmq packages."
+      apt: pkg='rabbitmq-server'
+           update_cache=yes
+           force=yes
+           state=present
+      become: yes
+
+    # PHP
+    - name: "PHP7 | Add PHP7 ppa repository."
+      apt_repository: repo=ppa:ondrej/php
+      become: yes
+
+    - name: "APT | Update apt cache."
+      apt: update_cache=yes
+      become: yes
+
+    - name: "PHP7 | Install PHP7 packages."
+      apt: pkg={{ php_packages }} state=latest
+      when: php_packages is defined
+      become: yes
+
+    - name: "PEAR | Install pear."
+      apt: pkg=php-pear state=latest
+      become: yes
+
+    - name: "PHP7 | Check /etc/php/7.0/fpm/php.ini file."
+      stat: path={{ php_inifile }}
+      register: phpfpm
+      become: yes
+
+    - name: "PHP7 | Update fpm memory limit."
+      lineinfile: dest={{ php_inifile }}
+                  regexp='memory_limit = 128M'
+                  line='memory_limit = 256M'
+      when: phpfpm.stat.exists
+      become: yes
+
+    - name: "PHP7 | Fix fpm cgi.fix_pathinfo."
+      lineinfile: dest={{ php_inifile }}
+                  regexp=';cgi.fix_pathinfo=1'
+                  line='cgi.fix_pathinfo = 0'
+      when: phpfpm.stat.exists
+      become: yes
+
+    # Composer
+    - name: "COMPOSER | Check if composer exist."
+      stat: path='/usr/local/bin/composer'
+      register: composer
+      become: yes
+
+    - name: "COMPOSER | Download composer."
+      shell: "cd /tmp; curl -sS https://getcomposer.org/installer | php"
+      when: composer.stat.exists == False
+
+    - name: "COMPOSER | Install composer."
+      shell: "cd /tmp; mv composer.phar /usr/local/bin/composer"
+      when: composer.stat.exists == False
+      become: yes
+
+    # Java
+    - name: "JAVA | Add Oracle Java Repository."
+      apt_repository: repo='ppa:openjdk-r/ppa'
+      become: yes
+
+    - name: "JAVA | Accept Java 8 License."
+      debconf: name='openjdk-8-jdk'
+               question='shared/accepted-oracle-license-v1-1'
+               value='true'
+               vtype='select'
+      become: yes
+
+    - name: "JAVA | Install Oracle Java 8."
+      apt: name={{java_packages}} state=latest
+      become: yes
+
+    # LibreOffice and Unoconv
+    - name: "LIBREOFFICE | Install LibreOffice."
+      apt: pkg={{libreoffice_packages}} state=present
+      become: yes
+
+    - name: "UNOCONV | Cleanup."
+      shell: 'rm -rf /tmp/unoconv'
+      become: true
+
+    - name: "UNOCONV | Clone unoconv rep."
+      git: repo='https://github.com/dagwieers/unoconv.git' dest='/tmp/unoconv'
+
+    - name: "UNOCONV | Build unoconv."
+      shell: 'cd /tmp/unoconv; make install'
+      become: true
+
+    - name: "UNOCONV | Cleanup."
+      shell: 'rm -rf /tmp/unoconv'
+      become: true
+
+    - name: "UNOCONV | Remove /etc/init.d/unoconvd file."
+      file: path=/etc/init.d/unoconvd state=absent
+      become: true
+
+    - name: "UNOCONV | Create unoconv service."
+      lineinfile: dest="/etc/init.d/unoconvd"
+                  line={{ item }}
+                  create=yes
+                  state=present
+      with_items:
+        - "### BEGIN INIT INFO\r"
+        - "# Provides: unoconvd\r"
+        - "# Required-Start: $network\r"
+        - "# Required-Stop: $network\r"
+        - "# Default-Start: 2 3 4 5\r"
+        - "# Default-Stop: 0 1 6\r"
+        - "# Description: unoconvd Converting documents\r"
+        - "### END INIT INFO\r"
+        - "#!/bin/sh\r"
+        - "case \"$1\" in\r"
+        - "    status)\r"
+        - "        if [ $(ps ax | grep '/usr/lib/libreoffice/program/soffice.bin' | grep 'accept=socket,host=127.0.0.1,port=2002,tcpNoDelay=1;urp;StarOffice.ComponentContext' | wc -l) -gt 0 ]; then\r"
+        - "            echo 'Unoconv listener active'\r"
+        - "        else\r"
+        - "            echo 'Unoconv listener inactive'\r"
+        - "        fi\r"
+        - "        ;;\r"
+        - "    start)\r"
+        - "        if [ $(ps ax | grep '/usr/lib/libreoffice/program/soffice.bin' | grep 'accept=socket,host=127.0.0.1,port=2002,tcpNoDelay=1;urp;StarOffice.ComponentContext' | wc -l) -gt 0 ]; then\r"
+        - "            echo 'Unoconv listener already started.'\r"
+        - "        else\r"
+        - "            /usr/bin/python3 /usr/bin/unoconv --listener &\r"
+        - "            echo 'Unoconv listener started.'\r"
+        - "        fi\r"
+        - "        ;;\r"
+        - "    stop)\r"
+        - "        if [ $(ps ax | grep '/usr/lib/libreoffice/program/soffice.bin' | grep 'accept=socket,host=127.0.0.1,port=2002,tcpNoDelay=1;urp;StarOffice.ComponentContext' | wc -l) -gt 0 ]; then\r"
+        - "            killall soffice.bin\r"
+        - "            echo 'Unoconv listener stopped.'\r"
+        - "        else\r"
+        - "            echo 'Unoconv isn’t running.'\r"
+        - "        fi\r"
+        - "        ;;\r"
+        - "    restart)\r"
+        - "        $0 stop\r"
+        - "        sleep 1\r"
+        - "        $0 start\r"
+        - "        ;;\r"
+        - "    *)\r"
+        - "        echo 'Usage: /etc/init.d/unoconvd {start|stop|restart|status}'\r"
+        - "        exit 1\r"
+        - "        ;;\r"
+        - "esac\r"
+      become: true
+
+    - name: "UNOCONV | Fix /etc/init.d/unoconvd file format."
+      shell: 'dos2unix /etc/init.d/unoconvd'
+      become: true
+
+    - name: "UNOCONV | Fix /etc/init.d/unoconvd file permissions."
+      shell: 'chmod +x /etc/init.d/unoconvd'
+      become: true
+
+    - name: "UNOCONV | Init service."
+      command: 'update-rc.d unoconvd defaults'
+      become: true
+
+    - name: "UNOCONV | Restart unoconv."
+      ignore_errors: yes
+      service: name=unoconvd state=started
+      become: true
+
+    # sshd
+    - name: 'SSHD | Fix session pam_keyinit.'
+      replace: dest='/etc/pam.d/sshd' regexp='^session    optional     pam_keyinit.so force revoke$' replace='session    optional     pam_keyinit.so'
+      become: yes
+
+    - name: 'FILE | Reload needed.'
+      file: path="/home/vagrant/.reload" state=touch
